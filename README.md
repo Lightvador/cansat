@@ -1,10 +1,11 @@
 # cansat
 #include <Wire.h>
-#include <Adafruit_BMP085.h>
+#include <Arduino_Sensor.h>
+#include <Arduino_BLE33.h>
 #include <SD.h>
 
-// Create an instance of the BMP085 sensor
-Adafruit_BMP085 bmp;
+// Create an instance of the BME280 sensor
+Arduino_BLE33 ble;
 
 // Create a file to write the data to
 File dataFile;
@@ -12,9 +13,9 @@ File dataFile;
 void setup() {
   Serial.begin(9600);
 
-  // Initialize the BMP085 sensor
-  if (!bmp.begin()) {
-    Serial.println("Could not find a valid BMP085 sensor, check wiring!");
+  // Initialize the BLE33 sensor
+  if (!ble.begin(0x76)) {
+    Serial.println("Could not find a valid BLE33 sensor, check wiring!");
     while (1) {}
   }
 
@@ -30,7 +31,7 @@ void setup() {
 
 void loop() {
   // Read the altitude from the sensor
-  float altitude = bmp.readAltitude();
+  float altitude = ble.readAltitude(1013.25);
 
   // Print the altitude to the serial monitor
   Serial.print("Altitude: ");
@@ -45,3 +46,4 @@ void loop() {
   // Wait for a bit before taking the next reading
   delay(1000);
 }
+
